@@ -13,7 +13,6 @@ setuptools.setup(
     license='The MIT License (MIT)',
     description='The Django-related reusable app provides the ability to dump database and media files via an admin interface.',
     long_description=open('README.rst').read(),
-    python_requires='>=3.6',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
@@ -21,5 +20,6 @@ setuptools.setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Framework :: Django',
-    ]
+    ],
+    python_requires='>=3.6'
 )
