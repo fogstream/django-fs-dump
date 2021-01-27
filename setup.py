@@ -3,7 +3,7 @@ import setuptools
 
 setuptools.setup(
     name='django-fs-dump',
-    version='0.0.1',
+    version='0.0.2',
     packages=['fs_dump'],
     include_package_data=True,
     install_requires=['pexpect==4.8.0'],

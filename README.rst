@@ -1,3 +1,9 @@
+Prerequisites
+=============
+
+The package postgresql-client should be installed on the host.
+
+
 Introduction
 ============
 
