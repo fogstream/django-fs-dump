@@ -3,10 +3,10 @@ import setuptools
 
 setuptools.setup(
     name='django-fs-dump',
-    version='0.0.2',
+    version='1.0.0',
     packages=['fs_dump'],
     include_package_data=True,
-    install_requires=['pexpect==4.8.0'],
+    install_requires=['pexpect==4.9.0'],
     author='Yuri Lya',
     author_email='yuri.lya@fogstream.ru',
     url='https://github.com/fogstream/django-fs-dump',

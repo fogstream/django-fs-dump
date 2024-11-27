@@ -19,7 +19,7 @@ class DumpAdmin(admin.ModelAdmin):
     """
 
     list_display = ('id', 'created_at', '_download_database_dump', '_download_media_dump')
-    readonly_fields = ('created_at', 'output')
+    readonly_fields = ('created_at',)
 
     def _download_database_dump(self, obj):
         file_name = os.path.basename(obj.database_dump.name)
@@ -60,13 +60,16 @@ class DumpAdmin(admin.ModelAdmin):
         return urls
 
     def create_view(self, request, form_url='', extra_context=None):
+        if not self.has_add_permission(request):
+            raise PermissionDenied
+
         dump = Dump.objects.create()
 
         dump.database_dump.save(f'{dump.id}_database_dump.psql', ContentFile(''))
         dump.media_dump.save(f'{dump.id}_media_dump.tar.gz', ContentFile(''))
 
-        utils.dump_database(dump)
-        utils.dump_media(dump)
+        utils.dump_database(dump.database_dump.path)
+        utils.dump_media(dump.media_dump.path)
 
         dump.save()
 
@@ -82,9 +85,14 @@ class DumpAdmin(admin.ModelAdmin):
         if form.is_valid():
             dump = self.save_form(request, form, change=False)
             self.save_model(request, dump, form, False)
-            utils.restore_database(dump)
-            utils.restore_media(dump)
-            utils.clear_fs_dump()
+
+            if dump.database_dump:
+                utils.restore_database(dump.database_dump.path)
+            if dump.media_dump:
+                utils.restore_media(dump.media_dump.path)
+            if dump.database_dump or dump.media_dump:
+                utils.clear_fs_dump()
+
             return redirect('admin:index')
 
         adminForm = helpers.AdminForm(
@@ -110,6 +118,8 @@ class DumpAdmin(admin.ModelAdmin):
             'inline_admin_formsets': [],
             'errors': helpers.AdminErrorList(form, []),
             'preserved_filters': '',
+            'show_save_and_add_another': False,
+            'show_save_and_continue': False,
         }
 
         context.update(extra_context or {})

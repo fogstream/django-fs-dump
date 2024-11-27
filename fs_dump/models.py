@@ -10,9 +10,8 @@ class Dump(models.Model):
     """
 
     created_at = models.DateTimeField(verbose_name='created at', auto_now_add=True)
-    database_dump = models.FileField(verbose_name='database dump', upload_to=local_settings.UPLOAD_DIR_NAME)
-    media_dump = models.FileField(verbose_name='media dump', upload_to=local_settings.UPLOAD_DIR_NAME)
-    output = models.TextField(verbose_name='output')
+    database_dump = models.FileField(verbose_name='database dump', upload_to=local_settings.UPLOAD_DIR_NAME, blank=True, null=True)
+    media_dump = models.FileField(verbose_name='media dump', upload_to=local_settings.UPLOAD_DIR_NAME, blank=True, null=True)
 
     class Meta:
         verbose_name = 'dump'
